@@ -18,4 +18,4 @@ const ClassesSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Student", ClassesSchema);
+module.exports = mongoose.model("Classes", ClassesSchema);
