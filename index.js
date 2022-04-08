@@ -1,9 +1,24 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 4000;
+
 const connect = require("./db/connect");
 require("dotenv").config();
 const routeTeacher = require("./routes/teacher.route");
+
+const connect = require('./db/connect');
+require('dotenv').config();
+const studentRouter = require('./routes/student.routes');
+const User = require('./models/user');
+
+app.use(express.json());
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 
 // app.get("/", (req, res) => {
@@ -11,6 +26,9 @@ const routeTeacher = require("./routes/teacher.route");
 // });
 app.use(express.json());
 app.use("/", routeTeacher);
+
+app.use("/students", studentRouter);
+
 
 const start = async () => {
   try {
