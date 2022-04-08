@@ -8,7 +8,12 @@ const studentRouter = require('./routes/student.routes');
 const User = require('./models/user');
 
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.send("hello world");
