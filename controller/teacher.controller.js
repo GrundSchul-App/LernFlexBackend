@@ -5,7 +5,7 @@ async function createTeacher(req, res) {
   //   console.log(req.body);
 
   const checkTeacher = await Teacher.findOne({ email: email });
-  const checkTeacherLastName = await Teacher.findOne({ lastName: lastName });
+  // const checkTeacherLastName = await Teacher.findOne({ lastName: lastName });
 
   if (checkTeacher && checkTeacherLastName) {
     res.status(400).send("Teacher already exists");

@@ -26,8 +26,11 @@ const teacherSchema = new mongoose.Schema(
         "Bitte eine richtige Email eintragen",
       ],
     },
-    classes: [
-    
+    classes: [{ 
+      type: Schema.Types.ObjectId,
+      ref: "Classes",
+      required: false,
+    }
     ],
     subjects: [
       {
