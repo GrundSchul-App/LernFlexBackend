@@ -1,12 +1,21 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 4000;
 const connect = require('./db/connect');
 require('dotenv').config();
+const studentRouter = require('./routes/student.routes');
+const User = require('./models/user');
+
+app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("hello world");
 });
+
+app.use("/students", studentRouter);
+
 
 const start = async () => {
   try {
