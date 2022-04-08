@@ -17,12 +17,6 @@ app.get("/", (req, res) => {
 app.use("/students", studentRouter);
 
 
-
-
-
-
-
-
 const start = async () => {
   try {
     await connect(process.env.MONGO_URI);
