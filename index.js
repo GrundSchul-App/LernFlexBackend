@@ -7,7 +7,7 @@ const connect = require("./db/connect");
 require("dotenv").config();
 const routeTeacher = require("./routes/teacher.route");
 
-const connect = require('./db/connect');
+
 require('dotenv').config();
 const studentRouter = require('./routes/student.routes');
 const User = require('./models/user');

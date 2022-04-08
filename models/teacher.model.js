@@ -4,11 +4,11 @@ const { model, Schema } = mongoose;
 const teacherSchema = new mongoose.Schema(
   {
     firstName: {
-        type: String,
-        required: true,
-        // minlength: 3,
-        // maxLength: 20,
-        }, 
+      type: String,
+      required: true,
+      // minlength: 3,
+      // maxLength: 20,
+    },
     lastName: {
       type: String,
       required: true,
@@ -26,11 +26,12 @@ const teacherSchema = new mongoose.Schema(
         "Bitte eine richtige Email eintragen",
       ],
     },
-    classes: [{ 
-      type: Schema.Types.ObjectId,
-      ref: "Classes",
-      required: false,
-    }
+    classes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Classes",
+        required: false,
+      },
     ],
     subjects: [
       {
@@ -53,5 +54,5 @@ const teacherSchema = new mongoose.Schema(
   }
 );
 
-const Teacher = mongoose.model("Teacher", teacherSchema)
-module.exports =Teacher ;
+const Teacher = mongoose.model("Teacher", teacherSchema);
+module.exports = Teacher;
