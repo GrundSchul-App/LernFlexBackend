@@ -1,7 +1,8 @@
 const Teacher = require("../models/teacher.model");
+require("../models/class.model")
 
 async function createTeacher(req, res) {
-  const { firstName, lastName, email } = req.body;
+  const { firstName, lastName, email, classes, subjects, students } = req.body;
   //   console.log(req.body);
 
   const checkTeacher = await Teacher.findOne({ email: email });
@@ -12,7 +13,14 @@ async function createTeacher(req, res) {
     return;
   }
   try {
-    await Teacher.create({ firstName, lastName, email });
+    await Teacher.create({
+      firstName,
+      lastName,
+      email,
+      classes,
+      subjects,
+      students,
+    });
     res.status(201).send("created");
   } catch (error) {
     console.error(error);
@@ -27,13 +35,16 @@ async function getTeacher(req, res) {
     } else {
       res.send(result);
     }
-  });
+  }).populate("classes")
+    .populate("subjects", "subject_code")
+    .populate("students")
+  ;
 }
 
 async function findTeacherById(req, res) {
   const id = req.params.id;
   try {
-    const teacher = await Teacher.findById({ _id: id });
+    const teacher = await Teacher.find({ _id: id });
     res.json(teacher);
   } catch (error) {
     console.error(error);
@@ -42,37 +53,45 @@ async function findTeacherById(req, res) {
 }
 
 async function findTeacherByClass(req, res) {
-  const params = req.params.class;
+  const params = req.params.classId;
 
   const allTeacher = await Teacher.find({
     classes: { $elemMatch: { $eq: params } },
-  }).populate({path:'Subject', select :'name'}).populate({path:'Classes', select:'className'});
+  }).populate('classes','className')
+  // .populate({path:'Subject', select :'subject_code'}).populate({path:'Classes', select:'className'});
   res.json(allTeacher);
 }
 
 async function findTeacherBySubject(req, res) {
-  const params = req.params.subject;
+  const params = req.params.subject_codeId;
+  // console.log(params)
 
   const allSubject = await Teacher.find({
     subjects: { $elemMatch: { $eq: params } },
-  });
+  }).populate("subjects", "subject_code");
+  // .populate('classes','className')
+
+  console.log(allSubject);
   res.json(allSubject);
 }
 
 async function sortTeacherByFirstName(req, res) {
   // db.Collection_name.sort({field_name : 1 ou -1})
-  const sortResult = await Teacher.find({}).sort({ firstName: 1 });
+  const sortResult = await Teacher.find().sort({ firstName: -1 });
+
   res.json(sortResult);
 }
 
 async function updateTeacher(req, res) {
   try {
     const id = req.params.id;
-    const teacher = await Teacher.findOneAndUpdate(id, req.body, {
+    // console.log('resultat:', req.body)
+    const teacher = await Teacher.findOneAndUpdate({ _id: id }, req.body, {
       new: true,
       runValidators: true,
       context: "query",
     });
+
     res.json(teacher);
   } catch (error) {
     console.log(error);

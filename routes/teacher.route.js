@@ -14,8 +14,8 @@ const teacherRouter = new Router();
 
 teacherRouter.get("/teacher", getTeacher);
 teacherRouter.get("/getTeacherById/:id", findTeacherById);
-teacherRouter.get("/getTeacherBy/:class", findTeacherByClass);
-teacherRouter.get("/getTeacherBySubject", findTeacherBySubject);
+teacherRouter.get("/getTeacherByClass/:classId", findTeacherByClass);
+teacherRouter.get("/getTeacherBySubject/:subject_codeId", findTeacherBySubject);
 teacherRouter.put("/update/:id", updateTeacher);
 
 teacherRouter.get("/sortTeacher", sortTeacherByFirstName);

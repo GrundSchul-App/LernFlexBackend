@@ -14,30 +14,30 @@ const StudentSchema = new mongoose.Schema(
       minlength: 3,
       maxLength: 20,
     },
-  //   birthDate: {
-  //     type: Date,
-  //     // required: [true, "Bitte Datum eintragen"],
-  //   },
-  //   gender: {
-  //     type: String,
-  //   },
-  //   email: {
-  //     type: String,
-  //     required: [true, "Bitte Email eintragen"],
-  //     trim: true,
-  //     lowercase: true,
-  //     unique: true,
-  //     match: [
-  //       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-  //       "Bitte eine richtige Email eintragen",
-  //     ],
-  //   },
-  //   teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
-  //   classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Classes" }],
-  //   homeworks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Homework" }],
-  // },
-  // {
-  //   timestamps: true,
+    birthDate: {
+      type: Date,
+       required: [true, "Bitte Datum eintragen"],
+    },
+    gender: {
+      type: String,
+    },
+    email: {
+      type: String,
+      required: [true, "Bitte Email eintragen"],
+      trim: true,
+      lowercase: true,
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Bitte eine richtige Email eintragen",
+      ],
+    },
+    teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
+    classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Classes" }],
+    homeworks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Homework" }],
+  },
+  {
+    timestamps: true,
    }
 );
 

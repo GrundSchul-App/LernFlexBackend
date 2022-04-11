@@ -3,10 +3,14 @@ const { model, Schema } = mongoose;
 
 const subjectSchema = new Schema(
   {
-    name: {
+    subject_code: {
       type: String,
-      required: [true, "Bitte Name eintragen"],
-    
+      require: [true, "Bitte Code eintragen"],
+    },
+
+    subject_title: {
+      type: String,
+      required: [true, "Bitte Titel eintragen"],
     },
   },
 
@@ -16,4 +20,5 @@ const subjectSchema = new Schema(
   }
 );
 
-const Subject = model("Subject", subjectSchema);
+const Subject = mongoose.model("Subject", subjectSchema,"subjects");
+module.exports = Subject;

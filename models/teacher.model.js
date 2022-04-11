@@ -26,20 +26,21 @@ const teacherSchema = new mongoose.Schema(
         "Bitte eine richtige Email eintragen",
       ],
     },
-    classes: [
+    classes: [ 
       {
         type: Schema.Types.ObjectId,
         ref: "Classes",
         required: false,
       },
     ],
-    subjects: [
+    subjects: [ 
       {
         type: Schema.Types.ObjectId,
         ref: "Subject",
         required: false,
       },
     ],
+    
     students: [
       {
         type: Schema.Types.ObjectId,
@@ -54,5 +55,5 @@ const teacherSchema = new mongoose.Schema(
   }
 );
 
-const Teacher = mongoose.model("Teacher", teacherSchema);
+const Teacher = mongoose.model("Teacher", teacherSchema,"teachers");
 module.exports = Teacher;
