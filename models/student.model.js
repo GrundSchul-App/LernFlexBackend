@@ -35,7 +35,7 @@ const StudentSchema = new Schema(
     },
 
     teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
-    classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Classes" }],
+    classId: { type: mongoose.Schema.Types.ObjectId, ref: "Classes" },
     homeworks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Homework" }],
   },
   {
