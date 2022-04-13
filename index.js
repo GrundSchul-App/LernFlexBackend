@@ -5,7 +5,7 @@ const port = process.env.PORT || 4000;
 const connect = require('./db/connect');
 require('dotenv').config();
 const studentRouter = require('./routes/student.routes');
-const User = require('./models/user');
+const classesRouter = require('./routes/classes.routes');
 
 app.use(express.json());
 const corsOptions = {
@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/students", studentRouter);
+app.use("/classes", classesRouter);
 
 
 const start = async () => {
