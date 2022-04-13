@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const { Schema, model } = mongoose;
 
-const StudentSchema = new mongoose.Schema(
+const StudentSchema = new Schema(
   {
     firstName: {
       type: String,
@@ -16,7 +17,7 @@ const StudentSchema = new mongoose.Schema(
     },
     birthDate: {
       type: Date,
-       required: [true, "Bitte Datum eintragen"],
+      required: [true, "Bitte Datum eintragen"],
     },
     gender: {
       type: String,
@@ -32,6 +33,7 @@ const StudentSchema = new mongoose.Schema(
         "Bitte eine richtige Email eintragen",
       ],
     },
+
     teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
     classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Classes" }],
     homeworks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Homework" }],
@@ -41,4 +43,4 @@ const StudentSchema = new mongoose.Schema(
    }
 );
 
-module.exports = mongoose.model("Student", StudentSchema);
+module.exports = model("Student", StudentSchema, "students");

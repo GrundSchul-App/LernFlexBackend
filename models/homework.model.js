@@ -13,7 +13,6 @@ const homeworkSchema = new Schema(
       type: String,
       required: false,
       minlength: 3,
-      maxlength: 30,
     },
     description: {
       type: String,
@@ -23,19 +22,29 @@ const homeworkSchema = new Schema(
       type: String,
       enum: ["info", "homework", "online"],
       default: "homework",
-      required: [true, "Bitte Type eintragen"],
+      required: true,
+    },
+    subject: {
+      type: Schema.Types.ObjectId,
+      ref: "Subject",
+      required: true,
+    },
+    teacher: {
+      type: Schema.Types.ObjectId,
+      ref: "Teacher",
+      required: true,
     },
     students: [
       {
         type: Schema.Types.ObjectId,
         ref: "Student",
         required: false,
+        default: [],
       },
     ],
   },
   {
     timestamps: true,
-   
   }
 );
 

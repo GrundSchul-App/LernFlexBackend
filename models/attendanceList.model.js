@@ -33,7 +33,6 @@ const attendanceListSchema = new Schema(
   },
   {
     timestamps: true,
-   
   }
 );
 
