@@ -40,7 +40,7 @@ const StudentSchema = new Schema(
   },
   {
     timestamps: true,
-   }
+  }
 );
 
 module.exports = model("Student", StudentSchema, "students");
