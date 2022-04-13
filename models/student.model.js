@@ -37,10 +37,10 @@ const StudentSchema = new Schema(
       type: Schema.Types.ObjectId, 
       ref: "Teacher" 
     }],
-    classes: [{ 
+    classId: { 
       type: Schema.Types.ObjectId, 
       ref: "Classes" 
-    }],
+    },
     homeworks: [{ 
       type: Schema.Types.ObjectId, 
       ref: "Homework" 
