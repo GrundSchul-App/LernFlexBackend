@@ -12,18 +12,29 @@ async function createSubject(req, res) {
     await Subject.create({ subject_code, subject_title });
     res.status(201).send("created");
   } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei  create neu subject!",
+    });
     console.error(error);
-    res.status(500).send(error);
+    // console.error(error);
+    // res.status(500).send(error);
   }
 }
 
-async function getSubject(req, res) {
+async function getSubject(req, res, next) {
   Subject.find({}, (err, result) => {
     if (err) {
-      res.send(err);
+      res.status(500).json({
+        message: "Fehler bei Subject Wiedergabe!",
+      });
+      console.error(error);
     } else {
-      res.send(result);
+      res.json(result);
     }
+    //   res.send(err);
+    // } else {
+    //   res.send(result);
+    // }
   });
 }
 
@@ -31,11 +42,64 @@ async function findSubjectById(req, res) {
   const id = req.params.id;
   try {
     const subject = await Subject.findById({ _id: id });
-    res, json(subject);
+
+    res.status(200).json({
+      message: "success",
+      data: subject,
+    });
   } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei suche subject mit ID !",
+    });
     console.error(error);
-    res.status(500).send(error);
+  }
+  //   res, json(subject);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).send(error);
+  // }
+}
+
+async function updateSubject(req, res) {
+  try {
+    const id = req.params.id;
+    const subject = await Subject.findOneAndUpdate({ _id: id }, req.body, {
+      new: true,
+      runValidators: true,
+      context: "query",
+    });
+    res.status(200).json({
+      message: "success",
+      data: subject,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei Subject Update!",
+    });
+    console.error(error);
+  }
+
+  //   res.json(subject);
+  // }catch (error) {
+  //   console.log(error)
+  // }
+}
+
+async function deleteSubject(req, res) {
+  const id = req.params.id;
+  try {
+    const subject = await Subject.findOneAndDelete({ _id: id });
+    res.status(200);
+    res.send("Subject deleted successfully");
+  } catch (error) {
+    return res.status(500).send("Not found with id:  " + id + " - " + err);
   }
 }
 
-module.exports = { createSubject, findSubjectById, getSubject };
+module.exports = {
+  createSubject,
+  findSubjectById,
+  getSubject,
+  updateSubject,
+  deleteSubject,
+};

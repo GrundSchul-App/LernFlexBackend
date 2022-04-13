@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { getSubject } = require("../controller/subject.controller");
 const {
   createTeacher,
   findTeacherById,
