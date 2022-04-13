@@ -5,10 +5,16 @@ const port = process.env.PORT || 4000;
 
 const connect = require("./db/connect");
 require("dotenv").config();
+
+const routeTeacher = require("./routes/teacher.route");
+const routerSubject = require("./routes/subject.route");
+const routerteacherAndSubject = require("./routes/teacher.subject.route");
 const studentRouter = require("./routes/student.routes");
+const User = require("./models/user");
 const homeworkRouter = require("./routes/homework.routes");
 const attendanceListRouter = require("./routes/attendanceList.routes");
 const classesRouter = require('./routes/classes.routes');
+
 
 
 app.use(express.json());
@@ -19,15 +25,18 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+// app.get("/", (req, res) => {
+//   res.send("hello world");
+// });
+app.use(express.json());
+app.use(routerteacherAndSubject);
+app.use("/", routerSubject);
+app.use("/", routeTeacher);
 
 app.use("/students", studentRouter);
 app.use("/homeworks", homeworkRouter);
 app.use("/attendanceList", attendanceListRouter);
 app.use("/classes", classesRouter);
-
 
 
 const start = async () => {

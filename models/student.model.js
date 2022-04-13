@@ -33,22 +33,14 @@ const StudentSchema = new Schema(
         "Bitte eine richtige Email eintragen",
       ],
     },
-    teachers: [{ 
-      type: Schema.Types.ObjectId, 
-      ref: "Teacher" 
-    }],
-    classes: [{ 
-      type: Schema.Types.ObjectId, 
-      ref: "Classes" 
-    }],
-    homeworks: [{ 
-      type: Schema.Types.ObjectId, 
-      ref: "Homework" 
-  }],
+
+    teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
+    classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Classes" }],
+    homeworks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Homework" }],
   },
   {
     timestamps: true,
-  }
+   }
 );
 
 module.exports = model("Student", StudentSchema, "students");
