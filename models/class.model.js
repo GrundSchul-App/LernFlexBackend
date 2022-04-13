@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const { model, Schema } = mongoose;
 
-const ClassesSchema = new mongoose.Schema(
+const ClassesSchema = new Schema(
   {
     className: {
       type: String,
@@ -8,8 +9,16 @@ const ClassesSchema = new mongoose.Schema(
     },
     modules: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: ["Subject", "Teacher"],
+        teacher: {
+          type: Schema.Types.ObjectId,
+          require: false,
+          ref: "Teacher",
+        },
+        subject: {
+          type: Schema.Types.ObjectId,
+          required: false,
+          ref: "Subject",
+        },
       },
     ],
   },
@@ -18,4 +27,4 @@ const ClassesSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Classes", ClassesSchema,"classes");
+module.exports = model("Classes", ClassesSchema, "classes");

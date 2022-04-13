@@ -1,13 +1,26 @@
 const Classes = require('../models/class.model');
 require('../models/student.model');
+require("../models/teacher.model")
+require("../models/subject.model")
+
+
 async function getClasses (req, res) {
   try {
-    const classes = await Classes.find({});
+    const classes = await Classes.find({}).populate("modules.teacher").populate("modules.subject");
     res.status(200).json({ classes, totalClasses: classes.length});
   } catch (error) {
     res.status(500).json({ error });
   }
 }
+
+
+
+
+
+
+
+
+
 
 async function getClass(req, res) {
   try {
