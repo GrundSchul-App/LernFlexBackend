@@ -29,7 +29,7 @@ async function getSubject(req, res, next) {
       });
       console.error(error);
     } else {
-      res.json(result);
+      res.status(200).json({message: "success", data: result});
     }
     //   res.send(err);
     // } else {

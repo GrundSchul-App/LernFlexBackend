@@ -7,7 +7,8 @@ require("../models/subject.model")
 async function getClasses (req, res) {
   try {
     const classes = await Classes.find({}).populate("modules.teacher").populate("modules.subject");
-    res.status(200).json({ classes, totalClasses: classes.length});
+    res.status(200).json({ message: "success", data: classes });
+     //classes, totalClasses: classes.length});
   } catch (error) {
     res.status(500).json({ error });
   }

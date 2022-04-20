@@ -14,6 +14,29 @@ async function getStudents(req, res) {
     res.status(500).json({ err });
   }
 }
+
+
+
+async function getStudentsByClassId(req, res) {
+  const { classId } = req.params;
+  try {
+    const AllStudents = await Student.find({
+      classId: classId    
+    })   
+
+    res.status(200).json({
+      message: "success",
+      data: AllStudents,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei Klassenlist Wiedergabe!",
+    });
+    console.error(error);
+  }
+}
+
+
 async function getStudent(req, res) {
   const student = await Student.findOne({ _id: req.params.id });
   res.status(200).json({ student, msg: "Gefunden" });
@@ -66,4 +89,5 @@ module.exports = {
   createStudent,
   updateStudent,
   deleteStudent,
+  getStudentsByClassId
 };
