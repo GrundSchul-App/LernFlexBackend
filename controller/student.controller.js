@@ -22,7 +22,7 @@ async function getStudentsByClassId(req, res) {
   try {
     const AllStudents = await Student.find({
       classId: classId    
-    })   
+    }).sort({ lastName: 1 });   
 
     res.status(200).json({
       message: "success",
