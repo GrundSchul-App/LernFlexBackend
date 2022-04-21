@@ -40,21 +40,14 @@ async function createTeacher(req, res) {
 }
 
 async function getTeacher(req, res, next) {
-  Teacher.find({}, (err, result) => {
-    if (err) {
-      // res.send(err);
-
-      res.status(500).json({
-        message: "Fehler bei Teacher Wiedergabe!",
-      });
-      console.error(error);
-    } else {
-      res.json(result);
-    }
-  })
-    .populate("classes")
-    .populate("subjects", "subject_code")
-    .populate("students");
+ try{
+   const Teachers= await Teacher.find({}).populate("classes").populate("subjects", "subject_code")
+   .populate("students");
+   res.status(200).json({message: "success",data:Teachers})
+ }catch(error){
+   res.status(500).json({error})
+ }
+  ;
 }
 
 async function findTeacherById(req, res) {
