@@ -41,7 +41,7 @@ async function createTeacher(req, res) {
 
 async function getTeacher(req, res, next) {
  try{
-   const Teachers= await Teacher.find({}).populate("classes").populate("subjects", "subject_code")
+   const Teachers= await Teacher.find({})
    .populate("students");
    res.status(200).json({message: "success",data:Teachers})
  }catch(error){
