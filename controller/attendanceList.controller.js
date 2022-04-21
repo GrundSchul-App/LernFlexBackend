@@ -32,12 +32,12 @@ async function addAttendanceList(req, res) {
   try {
     const newAttendanceList = await AttendanceList.create(req.body);
     res.status(200).json({
-      message: "success",
-      data: newAttendanceList,
+      message: "Heutige Abwesenheitsliste erfolgreich gespeichert!",
+      /* data: newAttendanceList, */
     });
   } catch (error) {
     res.status(500).json({
-      message: "Fehler bei Abwesenheit Liste erstellen!",
+      message: "Fehler beim generieren der Abwesendheitsliste!",
     });
     console.error(error);
   }

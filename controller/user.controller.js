@@ -59,7 +59,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// da bin ich jetzt
+
 
 export const deleteUser = async (req, res) => {
     const id = req.params.id;
@@ -75,40 +75,8 @@ export const deleteUser = async (req, res) => {
     console.error(error);
   }
 };
-//
-//
-//
 
-export const registerAdmin = async (req, res) => {
-  let { firstName, lastName, email, password } = req.body;
-  if (
-    !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]).{8,}$/.test(
-      password
-    )
-  ) {
-    res.status(400).json({
-      message:
-        "Password should contain number, uppercase, lowercase, special character.",
-    });
-    return;
-  }
-  const checkUser = await User.findOne({ email: email });
-  if (checkUser) {
-    res.status(400).json({ message: "User already exists" });
-    return;
-  }
-  password = await bcrypt.hash(password, 10);
-  try {
-    const role = "admin";
-    await User.create({ email, password, firstName, lastName, role });
-
-    res.status(201).send("admin created");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
-  }
-};
-
+// ich bin hier
 export const registerUser = async (req, res) => {
   let { firstName, lastName, email, password } = req.body;
 
