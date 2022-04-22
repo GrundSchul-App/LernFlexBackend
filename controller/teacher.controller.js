@@ -118,6 +118,29 @@ async function findTeacherBySubject(req, res) {
   }
 }
 
+async function findTeacherByClassAndSubject(req, res) {
+  const { classId, subjectId } = req.params;
+  // console.log(params)
+  try {
+    const allSubject = await Teacher.findOne({     
+       modules: { $elemMatch: { classes: classId } },
+       modules: { $elemMatch: { subjects: subjectId } },
+    })
+     
+    //  console.log(allSubject);
+    // res.json(allSubject);
+    res.status(200).json({
+      message: "success",
+      data: allSubject,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei Lehrer suchen!",
+    });
+    console.error(error);
+  }
+}
+
 async function sortTeacherByFirstName(req, res) {
   // db.Collection_name.sort({field_name : 1 ou -1})
 
@@ -171,4 +194,5 @@ module.exports = {
   deleteTeacher,
   findTeacherBySubject,
   findTeacherByClass,
+  findTeacherByClassAndSubject
 };
