@@ -28,7 +28,34 @@ async function getAllAttendanceList(req, res) {
 }
 
 async function addAttendanceList(req, res) {
-  //const { date, classId, subject, teacher, absent } = req.body;
+  const { classId, subject } = req.body;
+  
+
+  try {
+    const checkAttendanceList = await AttendanceList.findOne({
+      date: {
+        $gte: startOfDay(new Date()),
+        $lte: endOfDayfrom(new Date()),
+      },
+      classId: classId,
+      subject: subject,
+    })
+      .populate("classId", "className")
+      .populate("subject", "subject_title");
+  
+    if (checkAttendanceList) {
+      res.status(400).json({
+        message: `${checkAttendanceList.classId.className} - ${checkAttendanceList.subject.subject_title}   Absendheitliste für heute existiert bereits!`,
+      });
+      return;
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Interne Fehler!",
+    });
+    return;
+  }
+
   try {
     const newAttendanceList = await AttendanceList.create(req.body);
     res.status(200).json({
@@ -53,7 +80,7 @@ async function getOneAttendanceList(req, res) {
         $lte: endOfDayfrom(new Date(date)),
       },
       subject: subjectId,
-      class: classId,
+      classId: classId,
     })
       /*  .populate("class", "className")
       .populate("subject", "name")
