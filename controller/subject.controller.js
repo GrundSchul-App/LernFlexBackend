@@ -5,12 +5,16 @@ async function createSubject(req, res) {
 
   const checkSubject = await Subject.findOne({ subject_code: subject_code });
   if (checkSubject) {
-    res.status(400).send("Subject already exists");
+    res.status(400).json({
+      message: "Fach existiert bereits!",
+    });
     return;
   }
   try {
     await Subject.create({ subject_code, subject_title });
-    res.status(201).send("created");
+    res.status(201).json({
+      message: "success",
+    });
   } catch (error) {
     res.status(500).json({
       message: "Fehler bei  create neu subject!",
@@ -89,8 +93,8 @@ async function deleteSubject(req, res) {
   const id = req.params.id;
   try {
     const subject = await Subject.findOneAndDelete({ _id: id });
-    res.status(200);
-    res.send("Subject deleted successfully");
+    res.status(200).json({ message: "success"});
+   
   } catch (error) {
     return res.status(500).send("Not found with id:  " + id + " - " + err);
   }
