@@ -3,7 +3,7 @@ const Teacher = require("../models/teacher.model");
 require("../models/class.model");
 
 async function createTeacher(req, res) {
-  const { firstName, lastName, email, classes, subjects, students } = req.body;
+  const { firstName, lastName, email,modules} = req.body;
   //   console.log(req.body);
 
   const checkTeacher = await Teacher.findOne({ email: email });
@@ -14,16 +14,18 @@ async function createTeacher(req, res) {
     return;
   }
   try {
-    await Teacher.create({
+   const neuTeacher= await Teacher.create({
       firstName,
       lastName,
       email,
-      classes,
-      subjects,
-      students,
+      modules,
+    
+      
+     
     });
     res.status(200).json({
       message: "created",
+      data:neuTeacher,
     });
   } catch (error) {
     res.status(500).json({
@@ -41,7 +43,7 @@ async function createTeacher(req, res) {
 
 async function getTeacher(req, res, next) {
  try{
-   const Teachers= await Teacher.find({})
+   const Teachers= await Teacher.find({}).populate("modules.classes").populate("modules.subjects")
    .populate("students");
    res.status(200).json({message: "success",data:Teachers})
  }catch(error){
@@ -158,9 +160,12 @@ async function updateTeacher(req, res) {
       runValidators: true,
       context: "query",
     });
+    const resultTeachers=await Teacher.find({})
+    .populate(["modules.classes","modules.subjects"])
+    // .populate("modules.subjects")
     res.status(200).json({
       message: "success",
-      data: teacher,
+      data: resultTeachers,
     });
   } catch (error) {
     res.status(500).json({
@@ -177,9 +182,13 @@ async function updateTeacher(req, res) {
 async function deleteTeacher(req, res) {
   const id = req.params.id;
   try {
-    const teacher = await Teacher.deleteOne({ _id: id });
-    res.status(200);
-    res.send("Teacher deleted successfully");
+    const teacher = await Teacher.findByIdAndRemove({ _id: id });
+    // res.status(200);
+    // res.send("Teacher deleted successfully");
+    res.status(200).json({
+      message: "success",
+      data: teacher,
+    });
   } catch (err) {
     return res.status(500).send("Not found with id:  " + id + " - " + err);
   }
