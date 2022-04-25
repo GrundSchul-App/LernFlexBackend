@@ -3,7 +3,11 @@ const Teacher = require("../models/teacher.model");
 require("../models/class.model");
 
 async function createTeacher(req, res) {
-  const { firstName, lastName, email,modules} = req.body;
+
+ 
+
+  const { firstName, lastName, email,modules } = req.body;
+
   //   console.log(req.body);
 
   const checkTeacher = await Teacher.findOne({ email: email });
@@ -26,6 +30,9 @@ async function createTeacher(req, res) {
     res.status(200).json({
       message: "created",
       data:neuTeacher,
+
+   
+
     });
   } catch (error) {
     res.status(500).json({

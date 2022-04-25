@@ -8,7 +8,7 @@ const attendanceListSchema = new Schema(
       default: Date.now,
       required: false,
     },
-    class: {
+    classId: {
       type: Schema.Types.ObjectId,
       ref: "Classes",
       required: false,
