@@ -131,10 +131,10 @@ async function findTeacherByClassAndSubject(req, res) {
   const { classId, subjectId } = req.params;
   // console.log(params)
   try {
-    const allSubject = await Teacher.findOne({     
+    const allSubject = await Teacher.find({     
        modules: { $elemMatch: { classes: classId } },
        modules: { $elemMatch: { subjects: subjectId } },
-    })
+    }).populate(["modules.classes","modules.subjects"])
      
     //  console.log(allSubject);
     // res.json(allSubject);
