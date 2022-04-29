@@ -3,10 +3,7 @@ const Teacher = require("../models/teacher.model");
 require("../models/class.model");
 
 async function createTeacher(req, res) {
-
- 
-
-  const { firstName, lastName, email,modules } = req.body;
+  const { firstName, lastName, email, modules } = req.body;
 
   //   console.log(req.body);
 
@@ -18,21 +15,15 @@ async function createTeacher(req, res) {
     return;
   }
   try {
-   const neuTeacher= await Teacher.create({
+    const neuTeacher = await Teacher.create({
       firstName,
       lastName,
       email,
       modules,
-    
-      
-     
     });
     res.status(200).json({
       message: "created",
-      data:neuTeacher,
-
-   
-
+      data: neuTeacher,
     });
   } catch (error) {
     res.status(500).json({
@@ -49,14 +40,15 @@ async function createTeacher(req, res) {
 }
 
 async function getTeacher(req, res, next) {
- try{
-   const Teachers= await Teacher.find({}).populate("modules.classes").populate("modules.subjects")
-   .populate("students");
-   res.status(200).json({message: "success",data:Teachers})
- }catch(error){
-   res.status(500).json({error})
- }
-  ;
+  try {
+    const Teachers = await Teacher.find({})
+      .populate("modules.classes")
+      .populate("modules.subjects")
+      .populate("students");
+    res.status(200).json({ message: "success", data: Teachers });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 }
 
 async function findTeacherById(req, res) {
@@ -131,16 +123,38 @@ async function findTeacherByClassAndSubject(req, res) {
   const { classId, subjectId } = req.params;
   // console.log(params)
   try {
-    const allSubject = await Teacher.find({     
-       modules: { $elemMatch: { classes: classId ,subjects: subjectId} },
+    const allSubject = await Teacher.find({
+      modules: { $elemMatch: { classes: classId, subjects: subjectId } },
       //  modules: { $elemMatch: { subjects: subjectId } },
-    }).populate(["modules.classes","modules.subjects"])
-     
+    }).populate(["modules.classes", "modules.subjects"]);
+
     //  console.log(allSubject);
     // res.json(allSubject);
     res.status(200).json({
       message: "success",
       data: allSubject,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei Lehrer suchen!",
+    });
+    console.error(error);
+  }
+}
+
+async function findTeacherAndSubjectsByClassId(req, res) {
+  const { classId } = req.params;
+  // console.log(params)
+  try {
+    const allTeachers = await Teacher.find({
+      modules: { $elemMatch: { classes: classId } },
+    })
+      .sort({ modules: 1 })
+      .populate(["modules.classes", "modules.subjects"]);
+
+    res.status(200).json({
+      message: "success",
+      data: allTeachers,
     });
   } catch (error) {
     res.status(500).json({
@@ -167,8 +181,10 @@ async function updateTeacher(req, res) {
       runValidators: true,
       context: "query",
     });
-    const resultTeachers=await Teacher.find({})
-    .populate(["modules.classes","modules.subjects"])
+    const resultTeachers = await Teacher.find({}).populate([
+      "modules.classes",
+      "modules.subjects",
+    ]);
     // .populate("modules.subjects")
     res.status(200).json({
       message: "success",
@@ -210,5 +226,6 @@ module.exports = {
   deleteTeacher,
   findTeacherBySubject,
   findTeacherByClass,
-  findTeacherByClassAndSubject
+  findTeacherByClassAndSubject,
+  findTeacherAndSubjectsByClassId,
 };
