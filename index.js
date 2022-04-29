@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const port = process.env.PORT || 4000;
 
 const connect = require("./db/connect");
@@ -14,6 +15,7 @@ const studentRouter = require("./routes/student.routes");
 const homeworkRouter = require("./routes/homework.routes");
 const attendanceListRouter = require("./routes/attendanceList.routes");
 const classesRouter = require('./routes/classes.routes');
+const calEventsRouter = require("./routes/calEvent.routes");
 
 
 
@@ -24,6 +26,7 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+app.use(bodyParser.json());
 
 // app.get("/", (req, res) => {
 //   res.send("hello world");
@@ -37,6 +40,7 @@ app.use("/students", studentRouter);
 app.use("/homeworks", homeworkRouter);
 app.use("/attendanceList", attendanceListRouter);
 app.use("/classes", classesRouter);
+app.use("/calendar", calEventsRouter);
 
 
 const start = async () => {
