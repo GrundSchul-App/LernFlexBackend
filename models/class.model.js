@@ -7,6 +7,8 @@ const ClassesSchema = new Schema(
       type: String,
       required: [true, "Bitte Klassenname eintragen"],
     },
+    
+    /* 
     classTeacher: { 
       type: Schema.Types.ObjectId,  
       require: false,
@@ -25,7 +27,9 @@ const ClassesSchema = new Schema(
           ref: "Subject",
         },
       },
-    ],
+    ], */
+
+    
   },
   {
     timestamps: true,

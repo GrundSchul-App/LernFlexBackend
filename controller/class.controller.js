@@ -7,9 +7,7 @@ async function getClasses(req, res) {
   try {
     const classes = await Classes.find({})
       .sort({ className: 1 })
-      .populate("classTeacher")
-      .populate("modules.teacher")
-      .populate("modules.subject");
+      
     res.status(200).json({ message: "success", data: classes });
     //classes, totalClasses: classes.length});
   } catch (error) {
@@ -26,6 +24,8 @@ async function getClass(req, res) {
   }
 }
 
+
+// brauchen wir nicht
 async function getClassByClassTeacherId(req, res) {
   const { classTeacher } = req.params;
   try {
@@ -49,6 +49,7 @@ async function getClassByClassTeacherId(req, res) {
   }
 }
 
+// brauchen wir nicht
 async function getClassByModule(req, res) {
   const { subjectId, teacherId } = req.params;
   // console.log(params)

@@ -25,8 +25,19 @@ async function createSubject(req, res) {
   }
 }
 
-async function getSubject(req, res, next) {
-  Subject.find({}, (err, result) => {
+async function getSubject(req, res) {
+
+  try {
+    const subjects = await Subject.find({})
+      .sort({ subject_title: 1 })
+      
+    res.status(200).json({ message: "success", data: subjects });
+    //classes, totalClasses: classes.length});
+  } catch (error) {
+    res.status(500).json({ message: "Fehler bei Subject Wiedergabe!" });
+  }
+
+  /* Subject.find({}, (err, result) => {
     if (err) {
       res.status(500).json({
         message: "Fehler bei Subject Wiedergabe!",
@@ -39,7 +50,7 @@ async function getSubject(req, res, next) {
     // } else {
     //   res.send(result);
     // }
-  });
+  }); */
 }
 
 async function findSubjectById(req, res) {
