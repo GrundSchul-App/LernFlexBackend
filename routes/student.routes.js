@@ -13,7 +13,7 @@ const {
 router.get("/", getStudents);
 router.get("/class/:classId", getStudentsByClassId);
 router.get("/:id", getStudent);
-router.patch("/:id", updateStudent)
+router.put("/:id", updateStudent)
 router.post("/", createStudent);
 router.delete(
   "/:id", deleteStudent);
