@@ -9,9 +9,15 @@ async function getStudents(req, res) {
       .populate("classId")
       .populate("teachers")
       .populate("homeworks");
-    res.status(200).json({ students, totalStudents: students.length });
+    res.status(200).json({ 
+      message: "Success",
+      data: students,
+      totalStudents: students.length });
   } catch (err) {
-    res.status(500).json({ err });
+    res.status(500).json({ 
+      message: 'Fehler bei Teacher Wiedergabee' 
+    });
+    console.log(error);
   }
 }
 
@@ -43,13 +49,26 @@ async function getStudent(req, res) {
 }
 
 async function createStudent(req, res) {
+
+  const { firstName, lastName, email,gender,birthDate,classId } = req.body;
+
   try {
-    const newStudent = await Student.create(req.body);
+    const newStudent = await Student.create({
+      firstName,
+      lastName,
+      email,
+      gender,
+      birthDate,
+      classId
+    });
     res
       .status(201)
-      .json({ newStudent, success: "Student successfully created" });
+      .json({ 
+        data:newStudent,
+        message:  "Student successfully created" });
   } catch (err) {
-    res.status(500).json({ err });
+    res.status(500).json({
+      message: "Fehler bei  create neu Student!",});
   }
 }
 
