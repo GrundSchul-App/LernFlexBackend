@@ -26,6 +26,10 @@ const teacherSchema = new mongoose.Schema(
         "Bitte eine richtige Email eintragen",
       ],
     },
+    main_teacher:{
+    type:Boolean,
+    
+    },
     modules:[
       {
         classes:  
