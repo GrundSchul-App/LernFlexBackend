@@ -8,13 +8,13 @@ const ClassesSchema = new Schema(
       required: [true, "Bitte Klassenname eintragen"],
     },
     
-    /* 
+    
     classTeacher: { 
       type: Schema.Types.ObjectId,  
       require: false,
       ref: "Teacher"
     },
-    modules: [
+    /* modules: [
       {
         teacher: {
           type: Schema.Types.ObjectId,
@@ -27,7 +27,7 @@ const ClassesSchema = new Schema(
           ref: "Subject",
         },
       },
-    ], */
+    ],  */
 
     
   },
