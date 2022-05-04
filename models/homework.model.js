@@ -9,6 +9,10 @@ const homeworkSchema = new Schema(
       minlength: 3,
       maxlength: 30,
     },
+    fileName: {
+      type: String,
+      required: false,
+    },
     link: {
       type: String,
       required: false,
@@ -48,4 +52,4 @@ const homeworkSchema = new Schema(
   }
 );
 
-module.exports = model("Homework", homeworkSchema, "homework");
+module.exports = model("Homework", homeworkSchema, "homeworks");

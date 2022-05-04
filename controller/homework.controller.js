@@ -11,8 +11,18 @@ async function getAllHomeworks(req, res) {
   const { teacherId } = req.params;
   try {
     const AllHomeworks = await Homework.find({ teacherId })
-      .populate("students", "lastName")
-      .populate("subject", "name");
+   /*  .populate({path: 'subject', options: { sort: [['subject_code', 'asc']] }}) */
+     .populate("subject", "subject_code")
+
+   /*    .populate("teacher", "lastName")
+      .populate("students", "lastName") */
+     /*   .populate("subject", "subject_code")
+      .sort({ "subject.subject_code": 1} )   */
+       /* .populate("subject", "subject_code", null , { sort: [{subject_code: 1 }] })   */
+       /* .populate("subject", "subject_code").sort({ "subject_code": 1 }) */
+     
+      
+      
     res.status(200).json({
       message: "success",
       data: AllHomeworks,
@@ -115,11 +125,12 @@ async function getAllHomeworksByDate(req, res) {
 }
 
 async function addHomework(req, res) {
-  const { title, link, description, type, subject } = req.body;
+  const { title, fileName, link, description, type, subject } = req.body;
   const { teacherId } = req.params;
   try {
     const newHomework = await Homework.create({
       title,
+      fileName,
       link,
       description,
       type,
@@ -164,15 +175,15 @@ async function updateHomework(req, res) {
       runValidators: true,
       context: "query",
     })
-      .populate("students", "lastName")
-      .populate("subject", "name");
+     /*  .populate("students", "lastName")
+      .populate("subject", "name"); */
     res.status(200).json({
       message: "success",
       data: updatedHomework,
     });
   } catch (error) {
     res.status(500).json({
-      message: "Fehler bei Datei / Hausaufgabe aktualizieren!",
+      message: "Fehler bei Datei / Hausaufgabe aktualisieren!",
     });
     console.error(error);
   }
