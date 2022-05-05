@@ -10,10 +10,10 @@ const startOfDay = require("date-fns/startOfDay");
 async function getAllAttendanceList(req, res) {
   try {
     const AllAttendanceList = await AttendanceList.find()
-      .populate("class", "className")
-      .populate("subject", "name")
-      .populate("teacher", "firstName")
-      .populate("absent", "lastName");
+      .populate("classId")
+      .populate("subject")
+      .populate("teacher")
+      .populate("absent");
 
     res.status(200).json({
       message: "success",

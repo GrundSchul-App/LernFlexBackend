@@ -20,6 +20,7 @@ async function createTeacher(req, res) {
       lastName,
       email,
       modules,
+     
     });
     res.status(200).json({
       message: "created",

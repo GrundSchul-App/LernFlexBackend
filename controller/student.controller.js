@@ -28,7 +28,7 @@ async function getStudentsByClassId(req, res) {
   try {
     const AllStudents = await Student.find({
       classId: classId    
-    }).sort({ lastName: 1 });   
+    }).sort({ lastName: 1 }).populate("classId");   
 
     res.status(200).json({
       message: "success",
@@ -73,9 +73,11 @@ async function createStudent(req, res) {
 }
 
 async function updateStudent(req, res) {
+  const id=req.params.id;
   try {
+   
     const student = await Student.findOneAndUpdate(
-      { _id: req.params.id },
+      {_id:id },
       req.body,
       { new: true, runValidators: true, context: "query" }
     );
@@ -92,14 +94,18 @@ async function updateStudent(req, res) {
 }
 
 async function deleteStudent(req, res) {
-  const student = await Student.findById({ _id: req.params.id });
-  if (student) {
-    await student.remove();
-    res.json({ message: "Student removed" });
-  } else {
-    res.status(404);
-    throw new Error("student not found");
+ const id= req.params.id;
+  try{
+    const student = await Student.findByIdAndRemove({ _id:id });
+    res.status(200).json({
+      message: "success",
+      data: student,
+    });
+  }catch (err) {
+    return res.status(500).send("Not found with id:  " + id + " - " + err);
   }
+  
+  
 }
 
 module.exports = {
