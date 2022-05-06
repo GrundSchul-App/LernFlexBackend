@@ -72,29 +72,37 @@ async function addAttendanceList(req, res) {
 
 async function getOneAttendanceList(req, res) {
   const { date, subjectId, classId } = req.params;
-
+  
+//   const ghania=format(selectDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+// console.log("startdate",  startOfDay(new Date(date)));
+//   console.log("ghania backend", ghania);
+// console.log("databackend", new Date(date));
   try {
-    const OneAttendanceList = await AttendanceList.findOne({
+    const OneAttendanceList = await AttendanceList.find({
       date: {
         $gte: startOfDay(new Date(date)),
         $lte: endOfDayfrom(new Date(date)),
       },
       subject: subjectId,
-      classId: classId,
+      classId: classId
     })
+    .populate("classId")
+    .populate("subject")
+    .populate("teacher")
+    .populate("absent");
       /*  .populate("class", "className")
       .populate("subject", "name")
       .populate("teacher", "firstName")*/
-      .populate("absent"); //.populate("absent", "lastName");
+      // .populate("absent"); //.populate("absent", "lastName");
 
     if (!OneAttendanceList) {
-      return res.status(400).json({
+      return res.status(404).json({
         message: `Abwesendheitliste für ${date} nicht gefunden!`,
       });
     } else {
       res.status(200).json({
         message: "success",
-        data: OneAttendanceList.absent,
+        data: OneAttendanceList,
       });
     }
   } catch (error) {
