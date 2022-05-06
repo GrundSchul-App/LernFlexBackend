@@ -26,6 +26,7 @@ const teacherSchema = new mongoose.Schema(
         "Bitte eine richtige Email eintragen",
       ],
     },
+    
     modules:[
       {
         classes:  
@@ -41,6 +42,7 @@ const teacherSchema = new mongoose.Schema(
               ref: "Subject",
               required: false,
             },
+            
           
       }
     ],
