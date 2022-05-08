@@ -6,13 +6,13 @@ const StudentSchema = new Schema(
     firstName: {
       type: String,
       required: [true, "Bitte ame eintragen"],
-      minlength: 3,
+      minlength: 2,
       maxLength: 20,
     },
     lastName: {
       type: String,
       required: [true, "Bitte Name eintragen"],
-      minlength: 3,
+      minlength: 2,
       maxLength: 20,
     },
     birthDate: {
