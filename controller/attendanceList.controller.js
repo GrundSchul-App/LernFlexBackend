@@ -10,10 +10,12 @@ const startOfDay = require("date-fns/startOfDay");
 async function getAllAttendanceList(req, res) {
   try {
     const AllAttendanceList = await AttendanceList.find()
+    .sort({ date: -1, 'classId.className' : -1, 'subject.subject_title' : 1 })
       .populate("classId")
       .populate("subject")
       .populate("teacher")
-      .populate("absent");
+      .populate("absent")
+     
 
     res.status(200).json({
       message: "success",
@@ -133,6 +135,7 @@ async function getOneAttendanceList(req, res) {
 }
 
 
+
 //absent:{$elemMatch:{absentId}
 
 //_id:attendanceListId
@@ -149,16 +152,36 @@ async function updateAttendanceList(req,res){
   }catch(error){
     res.status(500).json({
       message: "Fehler bei Abwesenheitsliste suchen!"
+      });
+    console.error(error);
+  }
+}
+
+async function deleteAttendanceList(req, res) {
+  const id = req.params.id;
+  try {
+    await AttendanceList.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "success",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei Abwesenheitliste löschen!",
+
     });
     console.error(error);
   }
 }
 
-
 module.exports = {
   getAllAttendanceList,
   addAttendanceList,
   getOneAttendanceList,
+
   updateAttendanceList,
   getOneAttendanceByAbsentId
+
+  deleteAttendanceList
+
 };
