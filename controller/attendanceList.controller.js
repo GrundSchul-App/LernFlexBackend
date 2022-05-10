@@ -180,7 +180,7 @@ module.exports = {
   getOneAttendanceList,
 
   updateAttendanceList,
-  getOneAttendanceByAbsentId
+  getOneAttendanceByAbsentId,
 
   deleteAttendanceList
 
