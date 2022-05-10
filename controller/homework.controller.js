@@ -269,6 +269,8 @@ async function deleteHomework(req, res) {
   }
 }
 
+
+
 async function updateHomework(req, res) {
   const id = req.params.id;
   try {
@@ -291,6 +293,30 @@ async function updateHomework(req, res) {
   }
 }
 
+async function updateStudentHomework(req, res) {
+  const id = req.params.id;
+  console.log("backend reqBody", req.body);
+  try {
+    const updatedHomework = await Homework.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+      context: "query",
+    });
+    const resultHomework= await Homework.find({}).populate("students")
+    /*  .populate("students", "lastName")
+      .populate("subject", "name"); */
+    res.status(200).json({
+      message: "success",
+      data:updatedHomework
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler bei Datei / Hausaufgabe aktualisieren!",
+    });
+    console.error(error);
+  }
+}
+
 module.exports = {
   getAllHomeworks,
   addHomework,
@@ -302,4 +328,5 @@ module.exports = {
   getAllHomeworksByType,
   getAllHomeworksByDate,
   getAllHomeworksByTeacher,
+  updateStudentHomework,
 };
