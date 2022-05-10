@@ -3,14 +3,23 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 4000;
-
+const cookieParser = require("cookie-parser");
 const connect = require("./db/connect");
 require("dotenv").config();
+const loginRouter  = require("./routes/authRoutes.routes");
+
+const userRouter = require("./routes/user.routes");
+const logoutUser = require("./routes/authRoutes.routes");
+const { loginUser } = require('./controller/user.controller');
+
 
 const routeTeacher = require("./routes/teacher.route");
 const routerSubject = require("./routes/subject.route");
 const routerteacherAndSubject = require("./routes/teacher.subject.route");
 const studentRouter = require("./routes/student.routes");
+
+const { authUser } = require('./middlewares/auth');
+const { authAdmin } = require('./middlewares/admin');
 
 const homeworkRouter = require("./routes/homework.routes");
 const attendanceListRouter = require("./routes/attendanceList.routes");
@@ -27,18 +36,27 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser(process.env.JWT_KEY));
 
-// app.get("/", (req, res) => {
-//   res.send("hello world");
-// });
+app.get("/api/v1", (req, res) => {
+console.log(req.cookies);
+  res.send("hello world");
+});
 
+app.use(loginRouter);
+app.use(logoutUser);
 app.use(routerteacherAndSubject);
+// app.use("/users/login", loginUser);
+
+// app.use(authUser);
+
 app.use("/", routerSubject);
 app.use("/", routeTeacher);
-
-app.use("/students", studentRouter);
+app.use("/users", userRouter);
+app.use("/students",  studentRouter);
 app.use("/homeworks", homeworkRouter);
-app.use("/attendanceList", attendanceListRouter);
+app.use("/attendanceList",authUser, attendanceListRouter);
 app.use("/classes", classesRouter);
 app.use("/calendar", calEventsRouter);
 
