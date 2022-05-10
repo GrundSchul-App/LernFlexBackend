@@ -1,14 +1,15 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
-//import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
+const gravatar = require("gravatar");
 
-export const getUser = async (req, res) => {
-  const { id } = req.params;
+const getUser = async (req, res) => {
+  const { userId } = req.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(userId).exec();
     if (!user) {
       return res.status(400).json({
-        message: "user nicht gefunden:" + id,
+        message: "user nicht gefunden:" + userId,
       });
     }
     res.status(200).json({
@@ -23,7 +24,7 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
     res.status(200).json({
@@ -38,10 +39,10 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
-  const id = req.params.id;
+const updateUser = async (req, res) => {
+  const { userId } = req.params;
   try {
-    const userUpdated = await User.findByIdAndUpdate(id, req.body, {
+    const userUpdated = await User.findByIdAndUpdate(userId, req.body, {
       new: true,
       runValidators: true,
       context: "query",
@@ -61,10 +62,10 @@ export const updateUser = async (req, res) => {
 
 
 
-export const deleteUser = async (req, res) => {
-    const id = req.params.id;
+const deleteUser = async (req, res) => {
+    const userId = req.params.userId;
   try {  
-    await User.findByIdAndDelete(id);  
+    await User.findByIdAndDelete(userId);  
     res.status(200).json({
         message: "success"       
       });
@@ -77,8 +78,8 @@ export const deleteUser = async (req, res) => {
 };
 
 // ich bin hier
-export const registerUser = async (req, res) => {
-  let { firstName, lastName, email, password } = req.body;
+const registerUser = async (req, res) => {
+  let { firstName, lastName, email, password, admin } = req.body;
 
   const checkUser = await User.findOne({ email: email });
   if (checkUser) {
@@ -99,27 +100,20 @@ export const registerUser = async (req, res) => {
   }
 
   password = await bcrypt.hash(password, 10);
-  /*  try {
-         const role = "user";
-         
-         await User.create({ firstName, lastName, email, password, role });
- 
-         res.status(201).send('user created');
-     } catch (error) {
-         console.error(error);
-         res.status(500).send(error);
-     } */
-  const role = "user";
+
+  const avatar = gravatar.url(email, { protocol: "https", s: "100" });
+
   const userCreated = await User.create({
     firstName,
     lastName,
+    avatar,
     email,
     password,
-    role,
+    admin,
   });
 
   if (userCreated) {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
 
     if (user) {
       console.log("User._id", user._id);
@@ -133,7 +127,14 @@ export const registerUser = async (req, res) => {
       return res.json({
         message: "success",
         data: {
-          user: user,
+          user: {
+            firstName,
+            lastName,
+            avatar,
+            email,
+            password,
+            admin,
+          },
           token: token,
         },
       });
@@ -145,16 +146,16 @@ export const registerUser = async (req, res) => {
   }
 };
 
-export const loginUser = async (req, res) => {
-  const data = req.body;
-  if (!data.email || !data.password) {
+const loginUser = async (req, res) => {
+  const {email, password} = req.body;
+  if (!email || !password) {
     return res.status(400).send("Email oder Passwort leer");
   }
 
-  const user = await User.findOne({ email: data.email });
+  const user = await User.findOne({ email });
 
   if (user) {
-    const isValid = await bcrypt.compare(data.password, user.password);
+    const isValid = await bcrypt.compare(password, user.password);
 
     if (isValid) {
       const tokenData = {
@@ -163,8 +164,13 @@ export const loginUser = async (req, res) => {
       };
 
       const token = jwt.sign(tokenData, process.env.JWT_KEY);
-
-      return res.json({
+      res.cookie("token", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        secure: process.env.NODE_ENV === "production",
+        signed: true,
+      });
+      return res.status(200).json({
         message: "success",
         data: {
           user: user,
@@ -181,4 +187,22 @@ export const loginUser = async (req, res) => {
       message: "Konto nicht gefunden!",
     });
   }
+};
+
+const logoutUser = async (req, res) => {
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000),
+  });
+  res.status(200).json({ msg: "Der Benutzer ist ausgelogt!" });
+};
+
+module.exports = {
+  getUser,
+  getAllUsers,
+  updateUser,
+  deleteUser,
+  registerUser,
+  loginUser,
+  logoutUser,
 };

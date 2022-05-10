@@ -20,10 +20,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    role: {
-      type: String,
-      required: true,
-    },    
+    // role: {
+    //   default: 'admin',
+    //   enum: ['admin', 'student'],
+    //   type: String,
+    //   required: false,
+    // },
+    admin: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -31,6 +34,4 @@ const userSchema = new Schema(
   }
 );
 
-const userModel = model("User", userSchema, "users");
-
-export default userModel;
+module.exports = model("User", userSchema, "users");
