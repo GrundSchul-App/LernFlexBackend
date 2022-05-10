@@ -10,6 +10,7 @@ const {
   getAllHomeworksByType,
   getAllHomeworksByDate,
   getAllHomeworksByTeacher,
+  updateStudentHomework
 } = require("../controller/homework.controller.js");
 
 const homeworkRouter = new Router();
@@ -42,5 +43,9 @@ homeworkRouter
   .get(getOneHomework)
   .delete(deleteHomework)
   .put(updateHomework);
+
+
+  homeworkRouter
+  .route("/updateStudentHomework/:id").put( updateStudentHomework)
 
 module.exports = homeworkRouter;

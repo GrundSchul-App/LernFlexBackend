@@ -29,7 +29,6 @@ async function getAllAttendanceList(req, res) {
 
 async function addAttendanceList(req, res) {
   const { classId, subject } = req.body;
-  
 
   try {
     const checkAttendanceList = await AttendanceList.findOne({
@@ -42,7 +41,7 @@ async function addAttendanceList(req, res) {
     })
       .populate("classId", "className")
       .populate("subject", "subject_title");
-  
+
     if (checkAttendanceList) {
       res.status(400).json({
         message: `${checkAttendanceList.classId.className} - ${checkAttendanceList.subject.subject_title}   Absendheitliste für heute existiert bereits!`,
@@ -69,14 +68,34 @@ async function addAttendanceList(req, res) {
     console.error(error);
   }
 }
+// function suche nach attendance list mit Id + Absent id
+async function getOneAttendanceByAbsentId(req,res){
+  const {attendanceId,absentId}=req.params;
+  try{
+    const result = await AttendanceList.find({_id:attendanceId,absent:absentId})
+    if (!result) {
+      return res.status(404).json({
+        message: `Abwesendheitliste für ${date} nicht gefunden!`,
+      });
+    } else {
+      res.status(200).json({
+        message: "success",
+        data: result,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Fehler  Wiedergabe!",
+    });
+    console.error(error);
+  }
+}
+
 
 async function getOneAttendanceList(req, res) {
   const { date, subjectId, classId } = req.params;
+
   
-//   const ghania=format(selectDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
-// console.log("startdate",  startOfDay(new Date(date)));
-//   console.log("ghania backend", ghania);
-// console.log("databackend", new Date(date));
   try {
     const OneAttendanceList = await AttendanceList.find({
       date: {
@@ -84,16 +103,16 @@ async function getOneAttendanceList(req, res) {
         $lte: endOfDayfrom(new Date(date)),
       },
       subject: subjectId,
-      classId: classId
+      classId: classId,
     })
-    .populate("classId")
-    .populate("subject")
-    .populate("teacher")
-    .populate("absent");
-      /*  .populate("class", "className")
+      .populate("classId")
+      .populate("subject")
+      .populate("teacher")
+      .populate("absent");
+    /*  .populate("class", "className")
       .populate("subject", "name")
       .populate("teacher", "firstName")*/
-      // .populate("absent"); //.populate("absent", "lastName");
+    // .populate("absent"); //.populate("absent", "lastName");
 
     if (!OneAttendanceList) {
       return res.status(404).json({
@@ -113,8 +132,33 @@ async function getOneAttendanceList(req, res) {
   }
 }
 
+
+//absent:{$elemMatch:{absentId}
+
+//_id:attendanceListId
+
+async function updateAttendanceList(req,res){
+  const {absentId,attendanceListId}=req.params
+  try{
+   const allAttendanceList=await AttendanceList.findOneAndUpdate({absent:{$elemMatch:{absentId}}},req.body,{ new:true,runValidators:true,context:"query",});
+  //  const resultattendances= await allAttendanceList.find({}).populate("absent")
+   res.status(200).json({
+     message:"success",
+     data: allAttendanceList
+   });
+  }catch(error){
+    res.status(500).json({
+      message: "Fehler bei Abwesenheitsliste suchen!"
+    });
+    console.error(error);
+  }
+}
+
+
 module.exports = {
   getAllAttendanceList,
   addAttendanceList,
   getOneAttendanceList,
+  updateAttendanceList,
+  getOneAttendanceByAbsentId
 };
