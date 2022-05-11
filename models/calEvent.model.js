@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
-
+let date = new Date();
 const eventSchema = new Schema(
   {
     title: {
       type: String,
       required: [true, "Bitte titel eintragen"],
-      minlength: 2,
-      maxLength: 20,
+      // minlength: 2,
+      // maxLength: 20,
     },
     date: {
       type: Date,
@@ -17,8 +17,8 @@ const eventSchema = new Schema(
     description: {
       type: String,
       required: false,
-      minlength: 5,
-      maxlength: 45,
+      // minlength: 5,
+      // maxlength: 45,
     },
   },
   {
