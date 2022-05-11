@@ -143,7 +143,7 @@ async function getAllHomeworksBySubjectId(req, res) {
   const { teacherId, type } = req.params;
   try {
     const AllHomeworks = await Homework.find({
-      $and: [{ teacher: teacherId }, { type }],
+      $and: [{ teacher: teach2022-05-06erId }, { type }],
     })
       
       .populate("subject", "subject_code");
