@@ -1,4 +1,6 @@
 const Event = require("../models/calEvent.model");
+const endOfDayfrom = require("date-fns/endOfDay");
+const startOfDay = require("date-fns/startOfDay");
 
 async function getEvents(req, res) {
   try {
@@ -6,6 +8,33 @@ async function getEvents(req, res) {
     res.status(200).json({ data: events, totalEvents: events.length, message: "success"});
   } catch (err) {
     res.status(500).json({ err });
+  }
+}
+async function getEventByDate(req,res){
+  const date=req.params.date;
+  console.log(date);
+  console.log("res1", startOfDay(new Date(date)));
+  console.log("ende",endOfDayfrom(new Date(date)));
+  console.log("now",new Date(Date.now()))
+  
+  
+  try{
+    const allEvents=await Event.find({
+     
+      date:{
+        $gte:startOfDay(new Date(date)),
+        $lte:endOfDayfrom(new Date(date)),
+      },
+    });
+    res.status(200).json({
+      message:"success",
+      data:allEvents,
+    });
+  }catch(error){
+    res.status(500).json({
+      message:"Fehler bei Event Wiedergabe!"
+    })
+    console.error(error)
   }
 }
 
@@ -74,4 +103,5 @@ module.exports = {
   createEvent,
   updateEvent,
   deleteEvent,
+  getEventByDate,
 };

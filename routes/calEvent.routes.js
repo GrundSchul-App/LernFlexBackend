@@ -6,10 +6,12 @@ const {
   createEvent,
   updateEvent,
   deleteEvent,
+  getEventByDate,
 } = require("../controller/calEvent.controller");
 
 router.get("/", getEvents);
 router.get("/:id", getEventById);
+router.get("/date/:date", getEventByDate)
 router.put("/:id", updateEvent);
 router.post("/", createEvent);
 router.delete("/:id", deleteEvent);
