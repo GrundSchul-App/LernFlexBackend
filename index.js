@@ -25,6 +25,7 @@ const homeworkRouter = require("./routes/homework.routes");
 const attendanceListRouter = require("./routes/attendanceList.routes");
 const classesRouter = require("./routes/classes.routes");
 const calEventsRouter = require("./routes/calEvent.routes");
+const remoteWeekRouter = require("./routes/remoteWeek.routes");
 
 app.use(express.json());
 const corsOptions = {
@@ -58,6 +59,7 @@ app.use("/homeworks", homeworkRouter);
 app.use("/attendanceList", attendanceListRouter);
 app.use("/classes", classesRouter);
 app.use("/calendar", calEventsRouter);
+app.use("/remoteWeek", remoteWeekRouter);
 
 const start = async () => {
   try {
