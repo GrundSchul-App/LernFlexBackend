@@ -43,7 +43,7 @@ app.get("/api/v1", (req, res) => {
   res.send("hello world");
 });
 
-app.use(loginRouter);
+app.use('/',loginRouter);
 app.use('/users', registerRouter);
 app.use(logoutUser);
 app.use(routerteacherAndSubject);
