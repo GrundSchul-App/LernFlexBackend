@@ -5,25 +5,9 @@ require("../models/teacher.model.js");
 
 const endOfDayfrom = require("date-fns/endOfDay");
 const startOfDay = require("date-fns/startOfDay");
-const format = require("date-fns/format");
+// const format = require("date-fns/format");
 
-/* async function getAllHomeworks(req, res) {
-  const { teacherId } = req.params;
-  try {
-    const AllHomeworks = await Homework.find({ teacherId })
-    .populate("subject", "subject_code");
 
-    res.status(200).json({
-      message: "success",
-      data: AllHomeworks,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Fehler bei Datei / Hausaufgaben Wiedergabe!",
-    });
-    console.error(error);
-  }
-} */
 
 async function getAllHomeworks(req, res) {
   try {
@@ -94,26 +78,7 @@ async function getAllHomeworksByTitle(req, res) {
   }
 }
 
-/* async function getAllHomeworksBySubjectId(req, res) {
-  const { teacherId, subjectId } = req.params;
-  try {
-    const AllHomeworks = await Homework.find({
-      $and: [{ teacher: teacherId }, { subject: subjectId }],
-    })
-     
-      .populate("subject", "subject_code");
 
-    res.status(200).json({
-      message: "success",
-      data: AllHomeworks,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Fehler bei Datei / Hausaufgaben Wiedergabe!",
-    });
-    console.error(error);
-  }
-} */
 
 async function getAllHomeworksBySubjectId(req, res) {
   const { subjectId } = req.params;
@@ -139,26 +104,7 @@ async function getAllHomeworksBySubjectId(req, res) {
   }
 }
 
-/* async function getAllHomeworksByType(req, res) {
-  const { teacherId, type } = req.params;
-  try {
-    const AllHomeworks = await Homework.find({
-      $and: [{ teacher: teach2022-05-06erId }, { type }],
-    })
-      
-      .populate("subject", "subject_code");
 
-    res.status(200).json({
-      message: "success",
-      data: AllHomeworks,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Fehler bei Datei / Hausaufgaben Wiedergabe!",
-    });
-    console.error(error);
-  }
-} */
 
 async function getAllHomeworksByType(req, res) {
   const { type } = req.params;
@@ -196,7 +142,7 @@ async function getAllHomeworksByDate(req, res) {
       .populate("students", "lastName")
       .populate("subject", "name");
 
-    // console.log(format(AllHomeworks[0].createdAt, 'yyyy-MM-dd'));
+
 
     res.status(200).json({
       message: "success",
@@ -210,30 +156,6 @@ async function getAllHomeworksByDate(req, res) {
   }
 }
 
-/* async function addHomework(req, res) {
-  const { title, fileName, link, description, type, subject } = req.body;
-  const { teacherId } = req.params;
-  try {
-    const newHomework = await Homework.create({
-      title,
-      fileName,
-      link,
-      description,
-      type,
-      subject,
-      teacher: teacherId,
-    });
-    res.status(200).json({
-      message: "success",
-      data: newHomework,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Fehler bei Datei / Hausaufgaben erstellen!",
-    });
-    console.error(error);
-  }
-} */
 
 async function addHomework(req, res) {  
  
