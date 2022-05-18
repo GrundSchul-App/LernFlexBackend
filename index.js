@@ -46,9 +46,6 @@ app.use('/',loginRouter);
 app.use('/users', registerRouter);
 app.use(logoutUser);
 app.use(routerteacherAndSubject);
-// app.use("/users/login", loginUser);
-
-// app.use(authUser);
 
 app.use("/", routerSubject);
 app.use("/", routeTeacher);
