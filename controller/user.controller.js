@@ -24,6 +24,26 @@ const getUser = async (req, res) => {
   }
 };
 
+async function getUserByEmail(req,res){
+  const {email}=req.params;
+  console.log("email",email);
+  try {
+    const user=await User.findOne({email:email});
+
+    res.status(200).json({
+      message: "success",
+      data: user,
+    });
+  }catch (error) {
+    res.status(500).json({
+      message: "Fehler bei User Wiedergabe!",
+    });
+    console.error(error);
+  }
+}
+
+
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
@@ -205,4 +225,5 @@ module.exports = {
   registerUser,
   loginUser,
   logoutUser,
+  getUserByEmail
 };
